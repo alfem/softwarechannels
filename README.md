@@ -1,4 +1,28 @@
 softwarechannels
 ================
 
-Software Self Service for users with no administration privileges
+Software Channels is a simple system to allow common (no admin) users to install
+packages from restricted catalogs
+
+Just define 'channels' (groups of packages) in a simple text file and 
+give your users permissions to launch softwarechannels.
+
+They will only see packages in channels matching their unix groups.
+
+Set up:
+
+- Place the binary "softwarechannels" in /usr/local/bin 
+- Place the configuration file "softwarechannels.conf" in /etc/
+- Add some packages to /etc/softwarechannels.conf (see provided sample file)
+- Add these channels as groups to /etc/groups (use "addgroup yourgroup")
+- Add a special group "softwarechannels" to /etc/groups
+- Add those groups to one or more users (use "adduser youruser yourgroup")
+- Add the special group "softwarechannels" to these users
+- Add softwarechannels (binary) to /etc/sudoers with a line like this:
+
+%softwarechannels ALL = NOPASSWD: /usr/local/bin/softwarechannels
+
+Users in group "softwarechannels" will be allowed to launch softwarechannels
+binary with sudo (or gksudo) without a password prompt.
+
+Then, they will see a list of available "channels" and its packages.
