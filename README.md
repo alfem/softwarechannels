@@ -12,12 +12,14 @@ They will only see packages in channels matching their unix groups.
 Set up:
 
 - Place the binary "softwarechannels" in /usr/local/bin 
+- Install PyZenity from Brian Ramos (http://brianramos.com/?page_id=38)
+  (or use the copy in this git repo)
 - Place the configuration file "softwarechannels.conf" in /etc/
 - Add some packages to /etc/softwarechannels.conf (see provided sample file)
 - Add these channels as groups to /etc/groups (use "addgroup yourgroup")
 - Add a special group "softwarechannels" to /etc/groups
-- Add those groups to one or more users (use "adduser youruser yourgroup")
-- Add the special group "softwarechannels" to these users
+- Include one or more users in these groups (use "adduser youruser yourgroup")
+- Include these users in the special group "softwarechannels"
 - Add softwarechannels (binary) to /etc/sudoers with a line like this:
 
 %softwarechannels ALL = NOPASSWD: /usr/local/bin/softwarechannels
