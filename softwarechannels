@@ -1,0 +1,39 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
+# software-chanels
+# Selected package installer for users
+
+TITLE="Software Self Service"
+
+from aptdaemon import client
+import os,sys,pwd,grp
+from configobj import ConfigObj
+import PyZenity as zen
+
+conf = ConfigObj("/etc/softwarechannels.conf")
+
+realuser=os.getlogin()
+realgroups=[g.gr_name for g in grp.getgrall() if realuser in g.gr_mem]
+
+allowed_chanels=[c for c in conf.keys() if c in realgroups]
+selected_chanel=zen.List(["Chanel"],title=TITLE,data=[allowed_chanels])
+if not selected_chanel:
+  sys.exit(0)
+
+package_list=conf[selected_chanel[0]].keys()
+selected_package=zen.List(["Packages"],title=selected_chanel[0],data=[package_list])
+if not selected_package:
+  sys.exit(0)
+
+
+#apt_client.update_cache(wait=True)
+
+apt_client = client.AptClient()
+
+try:
+  apt_client.install_packages(selected_package,wait=True)
+except Exception as exc:
+  print exc
+  
+
